@@ -28,7 +28,7 @@
 # -----------------------
 
 BOOST_VER1=1
-BOOST_VER2=53
+BOOST_VER2=55
 BOOST_VER3=0
 register_option "--boost=<version>" boost_version "Boost version to be used, one of {1.55.0, 1.54.0, 1.53.0, 1.49.0, 1.48.0, 1.45.0}, default is 1.53.0."
 boost_version()
@@ -145,15 +145,15 @@ fi
 # a debug, in which case it's easy for a developer to comment out
 # this code.
 
-if [ -d "$PROGDIR/$BOOST_DIR" ]; then
-	echo "Cleaning: $BOOST_DIR"
-	rm -f -r $PROGDIR/$BOOST_DIR
-fi
+#if [ -d "$PROGDIR/$BOOST_DIR" ]; then
+#	echo "Cleaning: $BOOST_DIR"
+#	rm -f -r $PROGDIR/$BOOST_DIR
+#fi
 
-if [ -d "$PROGDIR/$BUILD_DIR" ]; then
-	echo "Cleaning: $BUILD_DIR"
-	rm -f -r $PROGDIR/$BUILD_DIR
-fi
+#if [ -d "$PROGDIR/$BUILD_DIR" ]; then
+#	echo "Cleaning: $BUILD_DIR"
+#	rm -f -r $PROGDIR/$BUILD_DIR
+#fi
 
 
 AndroidNDKRoot=$PARAMETERS
@@ -409,7 +409,7 @@ echo "Building boost for android"
   cxxflags=""
   for flag in $CXXFLAGS; do cxxflags="$cxxflags cxxflags=$flag"; done
 
-  { ./bjam -q                         \
+  { ./bjam -q -d+2                    \
          target-os=linux              \
          toolset=$TOOLSET             \
          $cxxflags                    \
