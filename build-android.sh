@@ -414,6 +414,7 @@ echo "Building boost for android"
          toolset=$TOOLSET             \
          $cxxflags                    \
          link=static                  \
+         runtime-link=static          \
          threading=multi              \
          --layout=versioned           \
          --without-python             \
