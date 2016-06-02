@@ -126,7 +126,7 @@ if [ $CLEAN = yes ] ; then
 	rm -f -r $PROGDIR/$BUILD_DIR
 	
 	echo "Cleaning: $BOOST_DIR"
-    (cd $PROGDIR/$BOOST_DIR && git clean -d)
+    (cd $PROGDIR/$BOOST_DIR && git clean -d -f )
 	
 	echo "Cleaning: logs"
 	rm -f -r logs
