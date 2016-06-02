@@ -116,7 +116,6 @@ echo "Building boost version: $BOOST_VER1.$BOOST_VER2.$BOOST_VER3"
 # -----------------------
 
 BOOST_DOWNLOAD_LINK="http://downloads.sourceforge.net/project/boost/boost/$BOOST_VER1.$BOOST_VER2.$BOOST_VER3/boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fboost%2Ffiles%2Fboost%2F${BOOST_VER1}.${BOOST_VER2}.${BOOST_VER3}%2F&ts=1291326673&use_mirror=garr"
-BOOST_TAR="boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}.tar.bz2"
 BOOST_DIR="boost_${BOOST_VER1}_${BOOST_VER2}_${BOOST_VER3}"
 BUILD_DIR="./build/"
 
@@ -127,11 +126,8 @@ if [ $CLEAN = yes ] ; then
 	rm -f -r $PROGDIR/$BUILD_DIR
 	
 	echo "Cleaning: $BOOST_DIR"
-	rm -f -r $PROGDIR/$BOOST_DIR
+    (cd $PROGDIR/$BOOST_DIR && git clean -d)
 	
-	echo "Cleaning: $BOOST_TAR"
-	rm -f $PROGDIR/$BOOST_TAR
-
 	echo "Cleaning: logs"
 	rm -f -r logs
 	rm -f build.log
@@ -280,39 +276,6 @@ then
 	exit 1
 fi
 
-# -----------------------
-# Download required files
-# -----------------------
-
-# Downalod and unzip boost in a temporal folder and
-if [ ! -f $BOOST_TAR ]
-then
-	echo "Downloading boost ${BOOST_VER1}.${BOOST_VER2}.${BOOST_VER3} please wait..."
-	prepare_download
-	download_file $BOOST_DOWNLOAD_LINK $PROGDIR/$BOOST_TAR
-fi
-
-if [ ! -f $PROGDIR/$BOOST_TAR ]
-then
-	echo "Failed to download boost! Please download boost ${BOOST_VER1}.${BOOST_VER2}.${BOOST_VER3} manually\nand save it in this directory as $BOOST_TAR"
-	exit 1
-fi
-
-if [ ! -d $PROGDIR/$BOOST_DIR ]
-then
-	echo "Unpacking boost"
-	if [ "$OPTION_PROGRESS" = "yes" ] ; then
-		pv $PROGDIR/$BOOST_TAR | tar xjf - -C $PROGDIR
-	else
-		tar xjf $PROGDIR/$BOOST_TAR
-	fi
-fi
-
-if [ $DOWNLOAD = yes ] ; then
-	echo "All required files has been downloaded and unpacked!"
-	exit 0
-fi
-
 # ---------
 # Bootstrap
 # ---------
@@ -414,7 +377,6 @@ echo "Building boost for android"
          toolset=$TOOLSET             \
          $cxxflags                    \
          link=static                  \
-         runtime-link=static          \
          threading=multi              \
          --layout=versioned           \
          --without-python             \
